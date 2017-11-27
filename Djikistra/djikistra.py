@@ -19,8 +19,10 @@ def dijkstra (G, s):
         aux.node[n]['pi'] = None
     
     aux.node[s]['lambda'] = 0
-    #aux.node['2']['lambda'] = 0
-    #aux.node['10']['lambda'] = 0
+    #iniciando dois vértices como 0
+    aux.node[20]['lambda'] = 0
+    #iniciando três vértices como 0
+    aux.node[40]['lambda'] = 0
 
     # colocar o lambda do vertice inicial como 0
     
@@ -51,31 +53,16 @@ def dijkstra (G, s):
             mst[v][u]['weight'] = aux[v][u]['weight']
     return mst 
     
-def calcular_peso(T): 
-    peso = 0
-    pesos = nx.get_edge_attributes(T, 'weight')
-    for v in T.edges(): 
-        peso += pesos[v]
-    return peso
-        
-        
 
 def main ():
     A = np.loadtxt('wg59_dist.txt')
     G = nx.from_numpy_matrix(A)
-    #G = nx.read_weighted_edgelist('womenclub.edgelist')
-    #print G.nodes()
-    H = dijkstra(G,0)
-    #peso = calcular_peso(H)
-    #print("Peso:",peso)
-    #print(nx.is_forest(H))
-    pos = nx.spring_layout(H, k = 0.15, iterations=20)
-    nx.draw_networkx(H, pos)
-    dict_w = nx.get_edge_attributes(H,'weight')
-    #print (dict_w)
-   
-    nx.draw_networkx_edge_labels(H, pos, labels = dict_w, font_size = 8, label_pos = 0.5)
-    #plt.savefig('dijkstra_test3.pdf')
+    print G.nodes()
+    D = dijkstra(G,0)
+    pos = nx.spring_layout(D, k = 0.15, iterations=20)
+    nx.draw_networkx(D, pos)
+    dict_w = nx.get_edge_attributes(D,'weight')
+    nx.draw_networkx_edge_labels(D, pos, labels = dict_w, font_size = 7, label_pos = 0.5)
     plt.show()
 
 main()

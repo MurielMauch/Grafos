@@ -32,27 +32,29 @@ def bfs(G,s):
 
     return P
 
+def main():
+    G = nx.read_pajek('karate.paj')
+    #print G.nodes()
+    P = bfs(G,G.nodes()[10])
+    T = nx.Graph()
+    #insere arestas em T
+    T.add_edges_from([(u,v) for u, v in P.items()])
+    #posicionamento do grafo T
+    pos = nx.spring_layout(T)
+    #plt.figure()
+    #nx.draw(G, pos)
+    #plt.show()
+    #plt.close()
+    #plt.figure()
+    #print T.nodes()
+    #plotar vertices de T
+    nx.draw_networkx_nodes(T, pos, node_size=700)
+    #obter dicionário com as distâncias
+    dist = { v: (v, data['lambda']) for v, data in G.nodes(data=True)}
+    #plotar arestas de T
+    nx.draw_networkx_labels(T, pos, labels=dist)
+    nx.draw_networkx_edges(T,pos)
+    plt.show()
+    #plt.close()
 
-G = nx.read_pajek('karate.paj')
-#print G.nodes()
-P = bfs(G,G.nodes()[10])
-T = nx.Graph()
-#insere arestas em T
-T.add_edges_from([(u,v) for u, v in P.items()])
-#posicionamento do grafo T
-pos = nx.spring_layout(T)
-#plt.figure()
-#nx.draw(G, pos)
-#plt.show()
-#plt.close()
-#plt.figure()
-print T.nodes()
-#plotar vertices de T
-nx.draw_networkx_nodes(T, pos, node_size=700)
-#obter dicionário com as distâncias
-dist = { v: (v, data['lambda']) for v, data in G.nodes(data=True)}
-#plotar arestas de T
-nx.draw_networkx_labels(T, pos, labels=dist)
-nx.draw_networkx_edges(T,pos)
-plt.show()
-#plt.close()
+main()

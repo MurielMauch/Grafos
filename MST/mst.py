@@ -47,28 +47,16 @@ def prim (G, s):
             mst.add_edge(v, u)
             mst[v][u]['weight'] = aux[v][u]['weight']
     return mst 
-'''    
-def calcular_peso(T): 
-    peso = 0
-    pesos = nx.get_edge_attributes(T, 'weight')
-    for v in T.edges(): 
-        peso += pesos[v]
-    return peso      
-'''
+
 def main ():
     A = np.loadtxt('ha30_dist.txt')
     G = nx.from_numpy_matrix(A)
     #print G.nodes()
-    H = prim(G,0)
-    #peso = calcular_peso(H)
-    #print("Peso:",peso)
-    #print(nx.is_forest(H))
+    H = prim(G,G.nodes()[0])
     pos = nx.spring_layout(H, k = 0.15, iterations=20)
     nx.draw_networkx(H, pos)
     dict_w = nx.get_edge_attributes(H,'weight')
-    #print (dict_w)
-    nx.draw_networkx_edge_labels(H, pos, labels = dict_w, font_size = 8, label_pos = 0.5)
-    #plt.savefig('dijkstra_test3.pdf')
+    nx.draw_networkx_edge_labels(H, pos, labels = dict_w, font_size = 7, label_pos = 0.5)
     plt.show()
 
 main()
