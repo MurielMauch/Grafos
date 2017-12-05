@@ -21,13 +21,15 @@ def bfs(G,s):
     while (len(Q) > 0):
         #obtem o primeiro elemento da fila
         u = Q.popleft()
+        #para cada vizinho de u, verifica se ele foi visitado
+        #se não foi, atualiza o peso e muda a cor
         for v in G.neighbors(u):
             if (G.node[v]['color'] == 'white'):
                 G.node[v]['lambda'] = G.node[u]['lambda'] + 1
                 P[v] = u
                 G.node[v]['color'] = 'gray'
                 Q.append(v)
-
+        #se o nó foi fechado, muda a cor para preto
         G.node[u]['color'] = 'black'
 
     return P
@@ -41,12 +43,6 @@ def main():
     T.add_edges_from([(u,v) for u, v in P.items()])
     #posicionamento do grafo T
     pos = nx.spring_layout(T)
-    #plt.figure()
-    #nx.draw(G, pos)
-    #plt.show()
-    #plt.close()
-    #plt.figure()
-    #print T.nodes()
     #plotar vertices de T
     nx.draw_networkx_nodes(T, pos, node_size=700)
     #obter dicionário com as distâncias

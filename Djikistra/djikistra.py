@@ -43,7 +43,7 @@ def dijkstra (G, s):
                 aux.node[v]['lambda'] = aux.node[u]['lambda'] + aux[u][v]['weight'] # atualiza peso
                 aux.node[v]['pi'] = u   # atualiza predecessor
                 push(Q, (aux.node[v]['lambda'], v)) # atualiza valores na fila
-    
+    #inicializa o grafo e insere os nós
     mst = nx.Graph()
     for v in aux.nodes():
         mst.add_node(v)
@@ -55,10 +55,12 @@ def dijkstra (G, s):
     
 
 def main ():
+    #lê a matriz de adjacêNcia e transforma em um grafo
     A = np.loadtxt('wg59_dist.txt')
     G = nx.from_numpy_matrix(A)
-    print G.nodes()
+    #chama o algoritmo djikistra e salva em D
     D = dijkstra(G,0)
+    #desenha o grafo
     pos = nx.spring_layout(D, k = 0.15, iterations=20)
     nx.draw_networkx(D, pos)
     dict_w = nx.get_edge_attributes(D,'weight')

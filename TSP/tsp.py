@@ -14,8 +14,10 @@ def twice_around(G, origin = 0):
         H.add_edge(u,v)     #duplico arestas da mst
     
     euleraux = list(nx.eulerian_circuit(H, origin)) # gero um circuito euleriano
+    #inicializa o grafo e cria uma lista auxiliar
     I = nx.Graph()
     aux = []
+    #salva o circuito euleriano na lista auxiliar
     for u,v in euleraux: 
         aux.append(u)
         aux.append(v)
@@ -38,25 +40,31 @@ def calcular_peso(T):
     return peso
         
 def main(): 
+    #lê a matriz de adjacência e a transforma em um grafo
     A = np.loadtxt('ha30_dist.txt')
     G = nx.from_numpy_matrix(A)
+    #inicializa a lista com os pesos minimos e maximos 
     min_pesos = []
     max_pesos = []
     for i in range(30):
+        #para cada vertice de G, chama o algoritmo twice_aroud
+        #o qual vai encontrar um ciclo Euleriano
+        #e calcular os pesos entre as arestas
         H = twice_around(G, i)
         weight = calcular_peso(H)
         push(min_pesos, (weight, i))
         push(max_pesos, (-weight, i))
-        #print (weight)
+    #seleciona os 3 menores pesos
     print("Melhores:")
     for i in range(3): 
         peso, inicial = pop(min_pesos)
         print("Iniciando Tour de Euler em:", inicial, ", obteve peso:", peso)
+    #seleciona os 3 maiores pesos
     print("Piores:")
     for i in range(3): 
         peso, inicial = pop(max_pesos)
         print("Iniciando Tour de Euler em:", inicial, ", obteve peso:", -peso)
-    
+    #desenha o grafo
     pos = nx.spring_layout(H, k = 0.35, iterations=100)
     nx.draw_networkx(H, pos)
     plt.show()

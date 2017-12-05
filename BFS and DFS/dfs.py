@@ -48,7 +48,6 @@ def main():
     nx.draw_networkx_nodes(T, pos, node_size=700)
     #obter dicionário com as distâncias
     ud = {v: (v, data['ud']) for v, data in G.nodes(data=True)}
-    #uf = {v: (v, data['uf']) for v, data in G.nodes(data=True)}
     nx.draw_networkx_labels(T, pos, labels=ud, font_size = 8, label_pos = 0.5)
     nx.draw_networkx_edges(T,pos)
     plt.show()

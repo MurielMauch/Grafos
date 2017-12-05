@@ -7,9 +7,10 @@ import sys
 from matplotlib import pyplot as plt
 
 def prim (G, s): 
+    #inicializa a pilha
     push = heappush
     pop = heappop
-    
+    #copia o grafo em uma variável auxiliar
     aux = G.copy()
     nodes = aux.nodes()
     
@@ -22,15 +23,18 @@ def prim (G, s):
     aux.node[s]['lambda'] = 0
    
     Q = [] # fila de prioridades
-    visited = []
+    visited = [] #fila para os vértices visitados
     
     for n in nodes: 
+        #coloca o vértice na fila
         push(Q, (aux.node[n]['lambda'], n))
     
     while Q:
+        #tira o vértice da lista e o coloca na fila de visitados
         u = pop(Q)       
         u = u[1]
         visited.append(u)
+        #para cada vizinho do vértice u, se ele não foi visitado e seu custo é menor
         for v in aux.neighbors(u):
             if v not in visited and aux.node[v]['lambda'] > aux[u][v]['weight']:
                 # tiro atual da fila 
@@ -38,8 +42,9 @@ def prim (G, s):
                 aux.node[v]['lambda'] = aux[u][v]['weight'] # atualiza peso
                 aux.node[v]['pi'] = u   # atualiza predecessor
                 push(Q, (aux.node[v]['lambda'], v)) # atualiza valores na fila
-    
+    #inicializa o grafo
     mst = nx.Graph()
+    #adiciona os nós e seus valores ao grafo, que será retornado
     for v in aux.nodes():
         mst.add_node(v)
         if aux.node[v]['pi'] is not None: 
@@ -49,10 +54,12 @@ def prim (G, s):
     return mst 
 
 def main ():
+    #lê e transforma uma matrix de adjacência em um grafo
     A = np.loadtxt('ha30_dist.txt')
     G = nx.from_numpy_matrix(A)
-    #print G.nodes()
+    #H recebe a chamada do algoritmo prim
     H = prim(G,G.nodes()[0])
+    #desenha o grafo
     pos = nx.spring_layout(H, k = 0.15, iterations=20)
     nx.draw_networkx(H, pos)
     dict_w = nx.get_edge_attributes(H,'weight')
